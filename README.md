@@ -9,10 +9,11 @@
 
 ## 相关资料
 
-1.Lookingglass开源裸眼3D代码(目前只能适配lookingglass的设备)：https://github.com/Looking-Glass
+ 1.Lookingglass开源裸眼3D代码(目前只能适配lookingglass的设备)：https://github.com/Looking-Glass
 
 ### 单视图生成多视角视图的论文
-1.VistaDream 论文：https://arxiv.org/abs/2410.16892  代码：https://github.com/WHU-USI3DV/VistaDream
+ 1.VistaDream 论文：https://arxiv.org/abs/2410.16892  代码：https://github.com/WHU-USI3DV/VistaDream
+
 
 ### 裸眼3D硬件的生产厂家
 1. 臻像科技  https://imagetru3d.com/
