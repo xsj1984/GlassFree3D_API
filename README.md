@@ -16,6 +16,7 @@ webGPU的运行效率高于OGL3.0，低于vulkan和DX12。
 ## 相关资料
 
  1.Lookingglass开源裸眼3D代码(目前只能适配lookingglass的设备)：https://github.com/Looking-Glass
+ 2.臻像科技光场插件：https://imagetru3d.com/software
 
 ### 单视图生成多视角视图的论文
  1.VistaDream 论文：https://arxiv.org/abs/2410.16892  代码：https://github.com/WHU-USI3DV/VistaDream
