@@ -22,10 +22,11 @@ webGPU的运行效率高于OGL3.0，低于vulkan和DX12。
  
 ### 裸眼3D编码原理
 
+Image preparation for 3D LCD
  
 
 ### 单视图生成多视角视图的论文
- 1.VistaDream 论文：https://arxiv.org/abs/2410.16892  代码：https://github.com/WHU-USI3DV/VistaDream
+1.VistaDream 论文：https://arxiv.org/abs/2410.16892  代码：https://github.com/WHU-USI3DV/VistaDream
 
 
 ### 裸眼3D硬件的生产厂家
@@ -34,6 +35,7 @@ webGPU的运行效率高于OGL3.0，低于vulkan和DX12。
 2. 北京天马辉电子技术有限责任公司 http://www.tmhjt.com/
    
 3. 上海易维视：http://www.evistek.com/
+
 ### 裸眼3D的科研单位
 1.北京邮电大学桑新柱教授团队
 
