@@ -14,9 +14,11 @@
 ### 单视图生成多视角视图的论文
 1.VistaDream 论文：https://arxiv.org/abs/2410.16892  代码：https://github.com/WHU-USI3DV/VistaDream
 
-### 裸眼3D的生产厂家
+### 裸眼3D硬件的生产厂家
 1. 臻像科技  https://imagetru3d.com/
 2. 北京天马辉电子技术有限责任公司 http://www.tmhjt.com/
 3. 
 ### 裸眼3D的科研单位
+1.北京邮电大学桑新柱团队
+2.北京航空航天大学王琼华团队
 ### 裸眼3D的内容生产商
