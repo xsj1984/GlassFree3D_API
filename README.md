@@ -4,7 +4,7 @@
 
 webGPU的运行效率高于OGL3.0，低于vulkan和DX12。
 
-在windows版的chrome浏览器下运行效率和potplayer相一致，无卡顿。
+在windows版的chrome浏览器下运行效率和potplayer相一致，无卡顿。（需完善测试数据）
 
 ## 研发计划
 1.实现web版的裸眼3D播放器，直接加载网络视频，进行裸眼3D的播放
