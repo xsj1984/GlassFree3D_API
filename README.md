@@ -18,9 +18,9 @@
 ### 裸眼3D硬件的生产厂家
 1. 臻像科技  https://imagetru3d.com/
    
-3. 北京天马辉电子技术有限责任公司 http://www.tmhjt.com/
+2. 北京天马辉电子技术有限责任公司 http://www.tmhjt.com/
    
-5. 
+3. 上海易维视：http://www.evistek.com/
 ### 裸眼3D的科研单位
 1.北京邮电大学桑新柱团队
 
