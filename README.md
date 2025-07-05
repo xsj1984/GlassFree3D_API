@@ -22,7 +22,7 @@ webGPU的运行效率高于OGL3.0，低于vulkan和DX12。
  
 ### 裸眼3D编码原理
 
-Image preparation for 3D LCD
+* Image preparation for 3D LCD   https://kdocs.cn/l/cnj16hHtex8S
  
 
 ### 单视图生成多视角视图的论文
