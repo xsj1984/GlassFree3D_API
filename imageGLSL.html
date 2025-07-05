@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebGL 图片左右反转</title>
+    <style>
+        canvas {
+            display: block;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+        }
+        input[type="file"] {
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <input type="file" id="imageInput" accept="image/*">
+    <canvas id="glCanvas"></canvas>
+
+    <script>
+        // 初始化 WebGL 上下文
+        function initWebGL(canvas) {
+            const gl = canvas.getContext('webgl');
+            if (!gl) {
+                alert('无法初始化 WebGL，您的浏览器可能不支持它。');
+                return null;
+            }
+            return gl;
+        }
+
+        // 编译着色器
+        function compileShader(gl, shaderSource, shaderType) {
+            const shader = gl.createShader(shaderType);
+            gl.shaderSource(shader, shaderSource);
+            gl.compileShader(shader);
+
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                console.error('编译着色器时出错:', gl.getShaderInfoLog(shader));
+                gl.deleteShader(shader);
+                return null;
+            }
+            return shader;
+        }
+
+        // 创建着色器程序
+        function createProgram(gl, vertexShader, fragmentShader) {
+            const program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+
+            if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+                console.error('创建着色器程序时出错:', gl.getProgramInfoLog(program));
+                gl.deleteProgram(program);
+                return null;
+            }
+            return program;
+        }
+
+        // 顶点着色器代码
+        const vertexShaderSource = `
+            attribute vec2 a_position;
+            attribute vec2 a_texCoord;
+            varying vec2 v_texCoord;
+
+            void main() {
+                gl_Position = vec4(a_position, 0.0, 1.0);
+                v_texCoord = a_texCoord;
+            }
+        `;
+
+        // 片段着色器代码，实现左右反转
+        const fragmentShaderSource = `
+            precision highp float;
+            varying vec2 v_texCoord;
+            uniform sampler2D u_image;
+
+            void main() {
+                
+                gl_FragColor = texture2D(u_image, vec2( v_texCoord.x, 1.0 -v_texCoord.y));
+            }
+        `;
+
+        // 绘制图片
+        function drawImage(gl, program, image) {
+            // 设置画布大小
+            const canvas = gl.canvas;
+            canvas.width = image.width;
+            canvas.height = image.height;
+            gl.viewport(0, 0, canvas.width, canvas.height);
+
+            // 定义顶点数据
+            const positions = new Float32Array([
+                -1, -1,
+                 1, -1,
+                -1,  1,
+                -1,  1,
+                 1, -1,
+                 1,  1
+            ]);
+
+            const texCoords = new Float32Array([
+                0, 0,
+                1, 0,
+                0, 1,
+                0, 1,
+                1, 0,
+                1, 1
+            ]);
+
+            // 创建并绑定顶点缓冲区
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
+
+            const positionLocation = gl.getAttribLocation(program, 'a_position');
+            gl.enableVertexAttribArray(positionLocation);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+            // 创建并绑定纹理坐标缓冲区
+            const texCoordBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, texCoords, gl.STATIC_DRAW);
+
+            const texCoordLocation = gl.getAttribLocation(program, 'a_texCoord');
+            gl.enableVertexAttribArray(texCoordLocation);
+            gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 0, 0);
+
+            // 创建并绑定纹理
+            const texture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+
+            // 使用着色器程序
+            gl.useProgram(program);
+
+            // 绘制三角形
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+        }
+
+        // 初始化 WebGL 和事件监听
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('glCanvas');
+            const gl = initWebGL(canvas);
+            if (!gl) return;
+
+            const vertexShader = compileShader(gl, vertexShaderSource, gl.VERTEX_SHADER);
+            const fragmentShader = compileShader(gl, fragmentShaderSource, gl.FRAGMENT_SHADER);
+            const program = createProgram(gl, vertexShader, fragmentShader);
+
+            const imageInput = document.getElementById('imageInput');
+            imageInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const image = new Image();
+                        image.onload = () => {
+                            drawImage(gl, program, image);
+                        };
+                        image.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
