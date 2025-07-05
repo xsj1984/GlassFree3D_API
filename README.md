@@ -9,4 +9,4 @@
 
 ## 相关资料
 
-Lookingglass开源裸眼3D代码：
+Lookingglass开源裸眼3D代码(目前只能适配lookingglass的设备)：https://github.com/Looking-Glass
