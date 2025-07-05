@@ -3,207 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebGL 播放视频并左右反转</title>
+    <title>视频播放器</title>
     <style>
         canvas {
-            display: block;
+            width: 640px;
+            height: 360px;
         }
     </style>
 </head>
 <body>
-    <canvas id="glCanvas"></canvas>
-    <script>
-        // 初始化WebGL上下文
-        function initWebGL(canvas) {
-            const gl = canvas.getContext('webgl');
-            if (!gl) {
-                alert('无法初始化WebGL，您的浏览器可能不支持它。');
-                return null;
-            }
-            return gl;
-        }
+    <h1 style="text-align: center;">左右格式视频立体测试</h1>
+    <div style="text-align: center;">
+        <video id="video" width="640" height="360" controls autoplay style="display: none;">
+            <source src="videos/sidebyside.mp4" type="video/mp4">
+            您的浏览器不支持视频标签。
+        </video>
+    </div>
 
-        // 初始化着色器程序
-        function initShaderProgram(gl, vsSource, fsSource) {
-            const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
-            const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
-
-            const shaderProgram = gl.createProgram();
-            gl.attachShader(shaderProgram, vertexShader);
-            gl.attachShader(shaderProgram, fragmentShader);
-            gl.linkProgram(shaderProgram);
-
-            if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-                alert('无法初始化着色器程序: ' + gl.getProgramInfoLog(shaderProgram));
-                return null;
-            }
-
-            return shaderProgram;
-        }
-
-        // 加载着色器
-        function loadShader(gl, type, source) {
-            const shader = gl.createShader(type);
-            gl.shaderSource(shader, source);
-            gl.compileShader(shader);
-
-            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-                alert('编译着色器时发生错误: ' + gl.getShaderInfoLog(shader));
-                gl.deleteShader(shader);
-                return null;
-            }
-
-            return shader;
-        }
-
-        // 顶点着色器代码
-        const vsSource = `
-            attribute vec2 a_position;
-            varying vec2 v_texCoord;
-
-            void main() {
-                gl_Position = vec4(a_position, 0, 1);
-                // 左右反转纹理坐标
-                v_texCoord = vec2(1.0 - a_position.x * 0.5 + 0.5, a_position.y * 0.5 + 0.5);
-            }
-        `;
-
-        // 片段着色器代码
-        const fsSource = `
-            precision mediump float;
-            varying vec2 v_texCoord;
-            uniform sampler2D u_texture;
-
-            void main() {
-                gl_FragColor = texture2D(u_texture, v_texCoord);
-            }
-        `;
-
-        // 主函数
-        function main() {
-            const canvas = document.getElementById('glCanvas');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            const gl = initWebGL(canvas);
-
-            if (gl) {
-                const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
-                const programInfo = {
-                    program: shaderProgram,
-                    attribLocations: {
-                        position: gl.getAttribLocation(shaderProgram, 'a_position'),
-                    },
-                    uniformLocations: {
-                        texture: gl.getUniformLocation(shaderProgram, 'u_texture'),
-                    },
-                };
-
-                const buffers = initBuffers(gl);
-                const texture = initTexture(gl);
-
-                // 创建视频元素
-                const video = document.createElement('video');
-                video.src = 'videos/sidebyside.mp4';
-                video.loop = true;
-                video.muted = true;
-                video.autoplay = true;
-
-                video.addEventListener('play', function() {
-                    const tick = function() {
-                        if (video.readyState === video.HAVE_ENOUGH_DATA) {
-                            gl.bindTexture(gl.TEXTURE_2D, texture);
-                            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video);
-                        }
-                        drawScene(gl, programInfo, buffers);
-                        requestAnimationFrame(tick);
-                    };
-                    tick();
-                }, false);
-            }
-        }
-
-        // 初始化缓冲区
-        function initBuffers(gl) {
-            const positionBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-
-            const positions = [
-                -1.0,  1.0,
-                 1.0,  1.0,
-                -1.0, -1.0,
-                 1.0, -1.0,
-            ];
-
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
-
-            return {
-                position: positionBuffer,
-            };
-        }
-
-        // 初始化纹理
-        function initTexture(gl) {
-            const texture = gl.createTexture();
-            gl.bindTexture(gl.TEXTURE_2D, texture);
-
-            // 设置默认纹理
-            const level = 0;
-            const internalFormat = gl.RGBA;
-            const width = 1;
-            const height = 1;
-            const border = 0;
-            const srcFormat = gl.RGBA;
-            const srcType = gl.UNSIGNED_BYTE;
-            const pixel = new Uint8Array([0, 0, 255, 255]);
-            gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height, border, srcFormat, srcType, pixel);
-
-            // 设置纹理参数
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-
-            return texture;
-        }
-
-        // 绘制场景
-        function drawScene(gl, programInfo, buffers) {
-            gl.clearColor(0.0, 0.0, 0.0, 1.0);
-            gl.clearDepth(1.0);
-            gl.enable(gl.DEPTH_TEST);
-            gl.depthFunc(gl.LEQUAL);
-
-            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-            // 设置顶点位置
-            {
-                const numComponents = 2;
-                const type = gl.FLOAT;
-                const normalize = false;
-                const stride = 0;
-                const offset = 0;
-                gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
-                gl.vertexAttribPointer(
-                    programInfo.attribLocations.position,
-                    numComponents,
-                    type,
-                    normalize,
-                    stride,
-                    offset
-                );
-                gl.enableVertexAttribArray(programInfo.attribLocations.position);
-            }
-
-            // 使用着色器程序
-            gl.useProgram(programInfo.program);
-
-            // 绘制
-            const offset = 0;
-            const vertexCount = 4;
-            gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
-        }
-
-        // 启动程序
-        window.onload = main;
-    </script>
 </body>
+
 </html>
