@@ -6,6 +6,8 @@ webGPU的运行效率高于OGL3.0，低于vulkan和DX12。
 
 在windows版的chrome浏览器下运行效率和potplayer相一致，无卡顿。（需完善测试数据）
 
+需要一个演示的网址：https://demo.cgt3d.cn（建设中）
+
 ## 研发计划
 
 1.实现web版的裸眼3D播放器，直接加载网络视频，进行裸眼3D的播放（2025年7月25日之前）
@@ -22,6 +24,8 @@ webGPU的运行效率高于OGL3.0，低于vulkan和DX12。
 2.臻像科技光场插件：https://imagetru3d.com/software
 
 3.3D通软件： https://www.3dvstar.com/3dList.html
+
+
  
 ### 裸眼3D编码原理
 
@@ -30,6 +34,8 @@ webGPU的运行效率高于OGL3.0，低于vulkan和DX12。
 
 ### 单视图生成多视角视图的论文
 1.VistaDream 论文：https://arxiv.org/abs/2410.16892  代码：https://github.com/WHU-USI3DV/VistaDream
+
+
 
 
 ### 裸眼3D硬件的生产厂家
@@ -51,3 +57,6 @@ webGPU的运行效率高于OGL3.0，低于vulkan和DX12。
 ### 裸眼3D的内容生产商
 
 需核实：https://zhuanlan.zhihu.com/p/8740945067
+
+
+### 光栅加工场
