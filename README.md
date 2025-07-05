@@ -20,6 +20,8 @@ webGPU的运行效率高于OGL3.0，低于vulkan和DX12。
 1.Lookingglass开源裸眼3D代码(目前只能适配lookingglass的设备)：https://github.com/Looking-Glass
  
 2.臻像科技光场插件：https://imagetru3d.com/software
+
+3.3D通软件： https://www.3dvstar.com/3dList.html
  
 ### 裸眼3D编码原理
 
@@ -36,6 +38,8 @@ webGPU的运行效率高于OGL3.0，低于vulkan和DX12。
 2. 北京天马辉电子技术有限责任公司 http://www.tmhjt.com/
    
 3. 上海易维视：http://www.evistek.com/
+
+
 
 ### 裸眼3D的科研单位
 1.北京邮电大学桑新柱教授团队
