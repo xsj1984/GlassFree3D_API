@@ -1,5 +1,8 @@
 # GlassFree3D_API
+
 使用WebGPU实现裸眼三维3D的展示
+webGPU的运行效率高于OGL3.0，低于vulkan和DX12。
+
 ## 研发计划
 1.实现web版的裸眼3D播放器，直接加载网络视频，进行裸眼3D的播放
 
