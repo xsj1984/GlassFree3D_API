@@ -35,3 +35,5 @@ webGPU的运行效率高于OGL3.0，低于vulkan和DX12。
 3.
 
 ### 裸眼3D的内容生产商
+
+需核实：https://zhuanlan.zhihu.com/p/8740945067
