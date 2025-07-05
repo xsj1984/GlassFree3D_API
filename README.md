@@ -13,3 +13,7 @@
 
 ### 单视图生成多视角视图的论文
 1.VistaDream 论文：https://arxiv.org/abs/2410.16892  代码：https://github.com/WHU-USI3DV/VistaDream
+
+### 裸眼3D的生产厂家
+### 裸眼3D的科研单位
+### 裸眼3D的内容生产商
