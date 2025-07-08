@@ -41,6 +41,10 @@ webGPU的运行效率高于OGL3.0，低于vulkan和DX12。
 
 项目定位：一个在 Blender 中创建合成 NeRF 和高斯溅射数据集的工具，旨在让用户能够轻松、快速地获取渲染图和相机参数。
 
+### 人像三维化
+
+https://repo-sam.inria.fr/fungraph/freestylegan/
+
 
 ## 裸眼3D硬件的生产厂家
 1. 臻像科技  https://imagetru3d.com/
